@@ -4,7 +4,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
 
+import java.math.BigDecimal;
+
+@Getter
 @Entity
 @Table(name = "bets")
 public class BetEntity {
@@ -24,13 +28,13 @@ public class BetEntity {
     @Column(name = "event_winner_id", nullable = false)
     private Long eventWinnerId;
 
-    @Column(name = "bet_amount", nullable = false)
-    private Double betAmount;
+    @Column(nullable = false, precision = 19, scale = 2)
+    private BigDecimal betAmount;
 
     protected BetEntity() {
     }
 
-    public BetEntity(Long betId, Long userId, Long eventId, Long eventMarketId, Long eventWinnerId, Double betAmount) {
+    public BetEntity(Long betId, Long userId, Long eventId, Long eventMarketId, Long eventWinnerId, BigDecimal betAmount) {
         this.betId = betId;
         this.userId = userId;
         this.eventId = eventId;
@@ -39,27 +43,4 @@ public class BetEntity {
         this.betAmount = betAmount;
     }
 
-    public Long getBetId() {
-        return betId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public Long getEventId() {
-        return eventId;
-    }
-
-    public Long getEventMarketId() {
-        return eventMarketId;
-    }
-
-    public Long getEventWinnerId() {
-        return eventWinnerId;
-    }
-
-    public Double getBetAmount() {
-        return betAmount;
-    }
 }

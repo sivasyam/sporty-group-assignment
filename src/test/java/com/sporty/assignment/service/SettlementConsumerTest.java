@@ -7,6 +7,8 @@ import com.sporty.assignment.model.SettlementMessage;
 import com.sporty.assignment.model.SettlementStatus;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SettlementConsumerTest {
@@ -17,7 +19,7 @@ class SettlementConsumerTest {
         consumer.start();
 
         SettlementMessage settlement = SettlementMessage.from(
-                new Bet(1L, 10L, 100L, 5L, 2L, 25.0),
+                new Bet(1L, 10L, 100L, 5L, 2L, BigDecimal.valueOf(25.0)),
                 new EventOutcome(100L, "Match 100", 2L),
                 SettlementStatus.WON
         );

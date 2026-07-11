@@ -1,9 +1,12 @@
 package com.sporty.assignment.api.request;
 
 import com.sporty.assignment.model.Bet;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Builder;
+
+import java.math.BigDecimal;
 
 @Builder
 public record BetRequest(
@@ -17,8 +20,8 @@ public record BetRequest(
         Long eventMarketId,
         @NotNull @Positive
         Long eventWinnerId,
-        @NotNull @Positive
-        Double betAmount
+        @NotNull @DecimalMin("0.01")
+        BigDecimal betAmount
 ) {
     public Bet toBet() {
         return new Bet(betId, userId, eventId, eventMarketId, eventWinnerId, betAmount);

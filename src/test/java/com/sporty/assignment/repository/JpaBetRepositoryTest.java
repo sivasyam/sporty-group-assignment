@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
+import java.math.BigDecimal;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -16,7 +18,7 @@ class JpaBetRepositoryTest {
 
     @Test
     void savesAndLoadsBetsFromH2() {
-        Bet bet = new Bet(10L, 20L, 300L, 4L, 9L, 55.0);
+        Bet bet = new Bet(10L, 20L, 300L, 4L, 9L, BigDecimal.valueOf(55.0));
 
         betRepository.save(bet);
 

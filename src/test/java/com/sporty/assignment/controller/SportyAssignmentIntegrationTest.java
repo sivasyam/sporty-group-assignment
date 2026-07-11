@@ -12,6 +12,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 
+import java.math.BigDecimal;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -53,7 +55,7 @@ class SportyAssignmentIntegrationTest {
                                 .eventId(eventId)
                                 .eventMarketId(8L)
                                 .eventWinnerId(4L)
-                                .betAmount(99.0)
+                                .betAmount(BigDecimal.valueOf(99.0))
                                 .build())))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.betId").value(501))
@@ -98,7 +100,7 @@ class SportyAssignmentIntegrationTest {
                                 .eventId(eventId)
                                 .eventMarketId(8L)
                                 .eventWinnerId(5L)
-                                .betAmount(75.0)
+                                .betAmount(BigDecimal.valueOf(75.0))
                                 .build())))
                 .andExpect(status().isCreated());
 

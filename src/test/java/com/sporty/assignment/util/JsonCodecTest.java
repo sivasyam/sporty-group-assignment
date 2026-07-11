@@ -6,6 +6,8 @@ import com.sporty.assignment.model.SettlementMessage;
 import com.sporty.assignment.model.SettlementStatus;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -22,7 +24,7 @@ class JsonCodecTest {
 
     @Test
     void roundTripsBet() {
-        Bet bet = new Bet(1L, 7L, 10L, 4L, 3L, 15.5);
+        Bet bet = new Bet(1L, 7L, 10L, 4L, 3L, BigDecimal.valueOf(15.5));
 
         String json = JsonCodec.toJson(bet);
         Bet parsed = JsonCodec.fromBet(json);
@@ -33,7 +35,7 @@ class JsonCodecTest {
     @Test
     void roundTripsSettlementMessage() {
         SettlementMessage message = new SettlementMessage(
-                1, 7, 10, 4, 3, 15.5, SettlementStatus.WON, java.time.Instant.parse("2026-07-10T22:00:00Z")
+                1, 7, 10, 4, 3, BigDecimal.valueOf(15.5), SettlementStatus.WON, java.time.Instant.parse("2026-07-10T22:00:00Z")
         );
 
         String json = JsonCodec.toJson(message);
@@ -49,4 +51,3 @@ class JsonCodecTest {
                 .hasMessageContaining("Missing field");
     }
 }
-

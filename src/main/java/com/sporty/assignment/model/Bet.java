@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Builder;
 
+import java.math.BigDecimal;
+
 @Builder
 public record Bet(
         @NotNull @Positive
@@ -17,6 +19,6 @@ public record Bet(
         @NotNull @Positive
         Long eventWinnerId,
         @NotNull @Positive
-        Double betAmount
+        BigDecimal betAmount
 ) {
 }

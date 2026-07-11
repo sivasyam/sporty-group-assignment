@@ -5,6 +5,7 @@ import com.sporty.assignment.model.EventOutcome;
 import com.sporty.assignment.model.SettlementMessage;
 import com.sporty.assignment.model.SettlementStatus;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -38,7 +39,7 @@ public final class JsonCodec {
                 requireLong(values, "eventId"),
                 requireLong(values, "eventMarketId"),
                 requireLong(values, "eventWinnerId"),
-                requireDouble(values, "betAmount")
+                requireBigDecimal(values, "betAmount")
         );
     }
 
@@ -50,7 +51,7 @@ public final class JsonCodec {
                 requireLong(values, "eventId"),
                 requireLong(values, "eventMarketId"),
                 requireLong(values, "eventWinnerId"),
-                requireDouble(values, "betAmount"),
+                requireBigDecimal(values, "betAmount"),
                 SettlementStatus.valueOf(requireString(values, "status")),
                 Instant.parse(requireString(values, "settledAt"))
         );
@@ -166,11 +167,11 @@ public final class JsonCodec {
         }
     }
 
-    private static double requireDouble(Map<String, String> values, String key) {
+    private static BigDecimal requireBigDecimal(Map<String, String> values, String key) {
         try {
-            return Double.parseDouble(requireString(values, key));
+            return new BigDecimal(requireString(values, key));
         } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException("Invalid double value for " + key);
+            throw new IllegalArgumentException("Invalid decimal value for " + key);
         }
     }
 

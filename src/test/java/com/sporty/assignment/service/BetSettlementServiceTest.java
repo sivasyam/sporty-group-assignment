@@ -7,6 +7,7 @@ import com.sporty.assignment.model.SettlementStatus;
 import com.sporty.assignment.repository.BetRepository;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +17,9 @@ class BetSettlementServiceTest {
     @Test
     void settlesOnlyMatchingBetsAndPublishesThem() {
         CapturingBetRepository repository = new CapturingBetRepository();
-        repository.save(new Bet(1L, 10L, 100L, 5L, 2L, 25.0));
-        repository.save(new Bet(2L, 11L, 100L, 6L, 3L, 40.0));
-        repository.save(new Bet(3L, 12L, 200L, 7L, 4L, 60.0));
+        repository.save(new Bet(1L, 10L, 100L, 5L, 2L, BigDecimal.valueOf(25.0)));
+        repository.save(new Bet(2L, 11L, 100L, 6L, 3L, BigDecimal.valueOf(40.0)));
+        repository.save(new Bet(3L, 12L, 200L, 7L, 4L, BigDecimal.valueOf(60.0)));
 
         CapturingSettlementProducer producer = new CapturingSettlementProducer();
         BetSettlementService service = new BetSettlementService(repository, producer);

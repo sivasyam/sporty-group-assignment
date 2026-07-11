@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Builder;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @Builder
@@ -19,7 +20,7 @@ public record SettlementMessage(
         @Positive
         long eventWinnerId,
         @Positive
-        double betAmount,
+        BigDecimal betAmount,
         @NotNull
         SettlementStatus status,
         @NotNull
