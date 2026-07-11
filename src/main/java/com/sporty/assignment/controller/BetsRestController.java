@@ -1,7 +1,9 @@
 package com.sporty.assignment.controller;
 
+import com.sporty.assignment.api.request.BetRequest;
 import com.sporty.assignment.model.Bet;
 import com.sporty.assignment.repository.BetRepository;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,8 +25,8 @@ public class BetsRestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Bet createBet(@RequestBody Bet bet) {
-        betRepository.save(bet);
+    public BetRequest createBet(@Valid @RequestBody BetRequest bet) {
+        betRepository.save(bet.toBet());
         return bet;
     }
 
@@ -33,4 +35,3 @@ public class BetsRestController {
         return betRepository.findAll();
     }
 }
-

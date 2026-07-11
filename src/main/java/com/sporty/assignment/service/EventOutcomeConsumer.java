@@ -1,30 +1,27 @@
 package com.sporty.assignment.service;
 
-import com.sporty.assignment.broker.MockKafkaBroker;
+import com.sporty.assignment.kafka.KafkaTopics;
 import com.sporty.assignment.model.EventOutcome;
 import com.sporty.assignment.util.JsonCodec;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Component;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
+@Component
 public final class EventOutcomeConsumer {
-    private final MockKafkaBroker broker;
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventOutcomeConsumer.class);
     private final BetSettlementService settlementService;
-    private final AtomicBoolean started = new AtomicBoolean(false);
 
-    public EventOutcomeConsumer(MockKafkaBroker broker, BetSettlementService settlementService) {
-        this.broker = broker;
+    public EventOutcomeConsumer(BetSettlementService settlementService) {
         this.settlementService = settlementService;
     }
 
-    public void start() {
-        if (!started.compareAndSet(false, true)) {
-            return;
-        }
-
-        broker.subscribe(EventOutcomePublisher.TOPIC, payload -> {
-            EventOutcome outcome = JsonCodec.fromEventOutcome(payload);
-            settlementService.settle(outcome);
-        });
+    @KafkaListener(topics = KafkaTopics.EVENT_OUTCOMES, groupId = "sporty-group-assignment")
+    public void onMessage(String payload) {
+        EventOutcome outcome = JsonCodec.fromEventOutcome(payload);
+        LOGGER.info("event=received_event_outcome event_id={}",
+                outcome.eventId());
+        settlementService.settle(outcome);
     }
 }
-

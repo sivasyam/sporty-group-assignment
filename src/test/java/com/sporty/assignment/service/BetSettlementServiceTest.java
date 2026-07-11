@@ -4,7 +4,7 @@ import com.sporty.assignment.model.Bet;
 import com.sporty.assignment.model.EventOutcome;
 import com.sporty.assignment.model.SettlementMessage;
 import com.sporty.assignment.model.SettlementStatus;
-import com.sporty.assignment.repository.InMemoryBetRepository;
+import com.sporty.assignment.repository.BetRepository;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BetSettlementServiceTest {
     @Test
     void settlesOnlyMatchingBetsAndPublishesThem() {
-        InMemoryBetRepository repository = new InMemoryBetRepository();
+        CapturingBetRepository repository = new CapturingBetRepository();
         repository.save(new Bet(1L, 10L, 100L, 5L, 2L, 25.0));
         repository.save(new Bet(2L, 11L, 100L, 6L, 3L, 40.0));
         repository.save(new Bet(3L, 12L, 200L, 7L, 4L, 60.0));
@@ -33,6 +33,25 @@ class BetSettlementServiceTest {
         );
         assertThat(producer.sent).hasSize(2);
         assertThat(producer.sent).extracting(SettlementMessage::betId).containsExactly(1L, 2L);
+    }
+
+    private static final class CapturingBetRepository implements BetRepository {
+        private final List<Bet> bets = new ArrayList<>();
+
+        @Override
+        public void save(Bet bet) {
+            bets.add(bet);
+        }
+
+        @Override
+        public List<Bet> findAll() {
+            return List.copyOf(bets);
+        }
+
+        @Override
+        public List<Bet> findByEventId(long eventId) {
+            return bets.stream().filter(bet -> bet.eventId() == eventId).toList();
+        }
     }
 
     private static final class CapturingSettlementProducer implements SettlementProducer {

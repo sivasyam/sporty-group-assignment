@@ -1,7 +1,8 @@
 package com.sporty.assignment.controller;
 
-import com.sporty.assignment.model.EventOutcome;
+import com.sporty.assignment.api.request.EventOutcomeRequest;
 import com.sporty.assignment.service.EventOutcomePublisher;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,8 +21,8 @@ public class EventOutcomeRestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public EventOutcome publishOutcome(@RequestBody EventOutcome outcome) {
-        publisher.publish(outcome);
+    public EventOutcomeRequest publishOutcome(@Valid @RequestBody EventOutcomeRequest outcome) {
+        publisher.publish(outcome.toEventOutcome());
         return outcome;
     }
 }
