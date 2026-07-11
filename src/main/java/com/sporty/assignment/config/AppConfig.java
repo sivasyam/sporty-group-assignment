@@ -1,6 +1,7 @@
 package com.sporty.assignment.config;
 
 import com.sporty.assignment.broker.MockRocketMqBroker;
+import com.sporty.assignment.repository.BetRepository;
 import com.sporty.assignment.service.BetSettlementService;
 import com.sporty.assignment.service.MockRocketMqSettlementProducer;
 import com.sporty.assignment.service.SettlementConsumer;
